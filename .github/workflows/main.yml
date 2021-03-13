@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - "master"
+  watch:
+    types: [started]
 
 jobs:
   build:
@@ -20,6 +22,10 @@ jobs:
           git clone https://github.com/v2fly/v2ray-core
           cd ./v2ray-core
           git checkout v4.35.1 && cd ..
+      - name: Modify v2ray-core DNS
+        run: |
+          sed -i 's/8.8.8.8/223.5.5.5/g' ./v2ray-core/infra/conf/dns_bootstrap_android.go
+          cat ./v2ray-core/infra/conf/dns_bootstrap_android.go
       - name: Setup gomobile
         run: |
           go get golang.org/x/mobile/cmd/gomobile
